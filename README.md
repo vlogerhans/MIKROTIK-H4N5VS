@@ -43,34 +43,35 @@ Kalau salah masak? Ya rasanya ngaco. Jadi ikutin petunjuknya, chef!
 chmod +x bitnami-lampstack-[versi]-linux-x64-installer.run
 ./bitnami-lampstack-[versi]-linux-x64-installer.run
 
-2. Masukin Aplikasi ke Panci Apache
+### 2. Masukin Aplikasi ke Panci Apache
+```bash
 cd /opt/bitnami/apache2/htdocs/
 rm index.html
 git clone https://your-repo-url.git .
 # atau kalau file ZIP
 unzip h4n5vs.zip -d .
 
-3. Bikin Folder Penting
+### 3. Bikin Folder Penting
 mkdir -p data logs
 chmod 755 data logs
 chown -R daemon:daemon data logs
 
-4. Pasang Bumbu PHP (Extension & Composer)
+### 4. Pasang Bumbu PHP (Extension & Composer)
 sudo /opt/bitnami/php/bin/pecl install openssl mysqli
 curl -sS https://getcomposer.org/installer | php
 mv composer.phar /usr/local/bin/composer
 composer install
 
-5. Tambahkan SDK OpenAI
+### 5. Tambahkan SDK OpenAI
 composer require openai/openai-php
 
-6. Buat File Rahasia (.env)
+### 6. Buat File Rahasia (.env)
 touch .env
 echo "OPENAI_API_KEY=isi_api_key_disini" >> .env
 chmod 600 .env
 chown daemon:daemon .env
 
-Edit Apache biar bisa "cium" environment variable:
+### Edit Apache biar bisa "cium" environment variable:
 bash:
 nano /opt/bitnami/apache2/conf/httpd.conf
 # Tambahkan:
@@ -79,7 +80,7 @@ nano /opt/bitnami/apache2/conf/httpd.conf
 </Directory>
 sudo /opt/bitnami/ctlscript.sh restart apache
 
-🌐 Bikin Virtual Host (Opsional tapi Keren)
+### 🌐 Bikin Virtual Host (Opsional tapi Keren)
 nano /opt/bitnami/apache2/conf/vhosts/h4n5vs-vhost.conf
 
 Isi:
@@ -95,11 +96,11 @@ Isi:
     CustomLog "logs/h4n5vs-access.log" combined
 </VirtualHost>
 
-Restart lagi: 
+## Restart lagi: 
 bash:
 sudo /opt/bitnami/apache2/bin/apachectl -k restart
 
-✅ Verifikasi (Cobain Masuk)
+## ✅ Verifikasi (Cobain Masuk)
 Buka browser: http://IP-Server
 Harusnya muncul halaman login H4N5VS
 
@@ -111,7 +112,7 @@ Password: admin123
 
 Langsung ganti ya, jangan kayak default password Indihome.
 
-🔒 Keamanan (Pakai Helm & Rompi Anti Peluru)
+## 🔒 Keamanan (Pakai Helm & Rompi Anti Peluru)
 bash :
 find /opt/bitnami/apache2/htdocs -type f -exec chmod 644 {} \;
 find /opt/bitnami/apache2/htdocs -type d -exec chmod 755 {} \;
@@ -120,7 +121,7 @@ chmod 600 /opt/bitnami/apache2/htdocs/.env
 Note : Gunakan SSL (biar HTTPS, bukan HTPSS 😅)
 
 
-🧯 Troubleshooting (Kalau Mie Lo Gak Matang)
+## 🧯 Troubleshooting (Kalau Mie Lo Gak Matang)
 Router Gak Terdeteksi?
 
 Cek IP, username, password
@@ -129,7 +130,7 @@ Pastikan API aktif di Mikrotik (/ip service enable api)
 
 Port 8728 atau 8729 jangan diblokir
 
-PHP Extension Hilang?
+# PHP Extension Hilang?
 
 bash:
 sudo /opt/bitnami/php/bin/pecl install extension_name
@@ -139,7 +140,7 @@ Permission Error?
 bash:
 chown -R daemon:daemon /opt/bitnami/apache2/htdocs
 
-🔄 Update Aplikasi
+### 🔄 Update Aplikasi
 bash:
 
 cp -r /opt/bitnami/apache2/htdocs /opt/bitnami/apache2/htdocs_backup
@@ -150,9 +151,9 @@ cp /opt/bitnami/apache2/htdocs_backup/.env ./
 chown -R daemon:daemon .
 sudo /opt/bitnami/ctlscript.sh restart apache
 
-📄 Lisensi
+### 📄 Lisensi
 Proyek ini dilisensikan dengan MIT License. Bebas pakai, asal jangan dipakai buat nyusupin iklan pinjol.
 
-❤️ Terima Kasih
+### ❤️ Terima Kasih
 Kalau lo sampai di bawah ini, lo adalah pejuang jaringan sejati. Jangan lupa ngopi, dan selamat mengamankan router!
 
