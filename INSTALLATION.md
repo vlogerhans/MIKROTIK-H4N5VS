@@ -1,395 +1,183 @@
-# PANDUAN INSTALASI "H4N5VS MIKROTIK SYSTEM SECURITY" VERSI KECE ABIS
+# PANDUAN INSTALASI H4N5VS MIKROTIK SYSTEM SECURITY
 
-## Apa Nih Aplikasinya?
+## "PERTAHANAN DIGITAL UNTUK ROUTER ANDA: TIDAK SULIT, CUMA SEDIKIT RIBET" 🎭
 
-Bro, sis! Jadi ceritanya H4N5VS ini tuh aplikasi keamanan buat router Mikrotik lo. Kalo router Mikrotik lo diibaratkan rumah, nah aplikasi ini tuh kayak satpam gaul yang gak cuma jaga, tapi juga punya CCTV canggih, alarm anti maling, plus bisa deteksi maling sebelum masuk! Keren kan?
+_Selamat datang di instalasi H4N5VS, di mana keamanan jaringan bertemu dengan komedian teknologi!_ 
 
-## Status Pengembangan Aplikasi
+---
 
-Aplikasi H4N5VS ini masih dalam tahap pengembangan aktif. Berikut fitur yang udah bisa dipake dan yang masih on-progress:
+## PERSIAPAN: "SEPERTI ORANG MAU KENCAN PERTAMA" 🕺
 
-### Udah Bisa Dipake ✓
-- Sistem login (pake user admin/admin123)
-- Halaman konfigurasi router Mikrotik
-- Framework dashboard utama dengan panel monitoring
+Bayangkan Anda mau kencan pertama. Anda mandi, pakai parfum, dan siapkan mental. Begitu juga server Anda sebelum instalasi H4N5VS:
 
-### Masih On Progress 🚧
-- Beberapa API endpoint masih dalam tahap pengembangan
-- Fungsi AI pattern recognition perlu API key OpenAI
-- Beberapa halaman seperti firewall.php, connections.php, settings.php masih dibangun
-- Beberapa asset gambar perlu ditambahkan (logo.png)
+### Apa yang Dibutuhkan:
+- **Server/Komputer**: Minimal seperti komputer kantor yang biasa dipakai untuk Excel dan nonton YouTube sembunyi-sembunyi.
+- **PHP**: Versi 7.4 ke atas. Ibarat chef di restoran, dia yang masak semua fiturnya.
+- **MySQL**: Database-nya. Anggap saja ini seperti lemari arsip, tapi digital dan tidak berdebu.
+- **Akses Internet**: Untuk update dan fitur AI-nya. Kalau internetnya putus-putus kayak hubungan LDR, ya... sabar aja.
 
-### Cara Fixing Error Login 🔧
-Kalo nemuin error "Call to undefined function authenticate()" pas login, lo bisa tambahin fungsi di file auth.php:
+**TIP PENTING:** _Jangan install aplikasi ini pakai HP. Serius. Itu seperti mencoba membawa lemari 2 pintu naik motor._
 
-```php
-/**
- * Alias for login function
- */
-function authenticate($username, $password) {
-    return login($username, $password);
-}
+---
+
+## PROSES INSTALASI: "SEPERTI MERAKIT LEMARI IKEA" 🛠️
+
+### Langkah 1: Download dan Ekstrak
+```
+Bayangkan ini seperti buka kado ulang tahun. Bedanya, ini kado yang melindungi jaringan Anda.
 ```
 
-### Cara Fixing Error Dashboard 🔧
-Kalo nemuin error "Call to undefined function require_auth()" pas buka dashboard, lo bisa tambahin fungsi di file auth.php:
+1. Download H4N5VS dari situs resmi (atau dari repo ini)
+2. Ekstrak ke direktori web server Anda:
+   - Di Windows: Biasanya di `C:\xampp\htdocs\h4n5vs`
+   - Di Linux: `/var/www/html/h4n5vs` atau di Bitnami `/opt/bitnami/apache2/htdocs/h4n5vs`
+   - Di Mac: Wah, pakai Mac? Mahal amat. Biasanya di `/Applications/XAMPP/xamppfiles/htdocs/h4n5vs`
 
-```php
-/**
- * Require authentication or redirect to login page
- */
-function require_auth() {
-    if (!is_logged_in()) {
-        header('Location: login.php');
-        exit;
-    }
-}
+### Langkah 2: Setup Database
+
+Ini seperti menyiapkan buku catatan baru. Bedanya, buku ini otomatis mencatat siapa saja yang mencoba masuk rumah Anda tanpa izin.
+
+**Cara Mudah:**
+1. Buka browser, arahkan ke `http://localhost/h4n5vs/install/mysql_setup.php`
+2. Isi form dengan detail MySQL Anda:
+   - Host: Biasanya `localhost` (kecuali Anda punya alasan aneh untuk mengubahnya)
+   - Database: `h4n5vs` (atau nama lain jika Anda ingin lebih kreatif)
+   - Username: Biasanya `root` untuk komputer lokal
+   - Password: Jika Anda pakai XAMPP dan belum ubah apa-apa, kemungkinan kosong
+
+**Cara Manual (Untuk yang Suka Tantangan):**
+1. Buat database MySQL baru bernama `h4n5vs`
+2. Import skema database dari file SQL yang disediakan (jika ada)
+3. Salin `includes/db_config.php.example` menjadi `includes/db_config.php`
+4. Edit file tersebut dengan detail koneksi MySQL Anda
+
+**TIP:** _Jika Anda lupa password MySQL, itu seperti lupa nama mantan. Mungkin lebih baik diatur ulang saja._
+
+### Langkah 3: Konfigurasi API untuk Fitur AI (Opsional)
+
+Ini seperti menambahkan otak jenius ke sistem yang sudah pintar. Kalau tidak diaktifkan juga tidak apa-apa, tapi kalau diaktifkan jadi lebih keren.
+
+1. Daftar akun di OpenAI untuk mendapatkan API key
+2. Tambahkan key ke variabel lingkungan `OPENAI_API_KEY`
+   - Windows: Buka PowerShell as Admin, ketik: `setx OPENAI_API_KEY "sk-your-key-here"`
+   - Linux/Mac: Tambahkan `export OPENAI_API_KEY="sk-your-key-here"` ke file `.bashrc` atau `.zshrc`
+   - Bitnami: Ikuti panduan di BITNAMI_SETUP.md
+3. Atau tambahkan ke file konfigurasi:
+   ```
+   mkdir -p config
+   echo '<?php $openai_api_key = "sk-your-key-here"; ?>' > config/api_keys.php
+   chmod 600 config/api_keys.php
+   ```
+
+**TIP:** _Jangan bagikan API key Anda. Seperti sikat gigi, simpan untuk diri sendiri saja._
+
+---
+
+## KONFIGURASI ROUTER MIKROTIK: "MEMPERSIAPKAN OBJEK PERLINDUNGAN" 🔒
+
+Nah, ini ibarat menyiapkan rumah untuk dipasang sistem alarm canggih.
+
+### Langkah 1: Aktifkan API Service
+1. Buka Winbox (atau saya sebut "jendela ajaib pengontrol router")
+2. Masuk ke IP → Services
+3. Pastikan API aktif (port default 8728) ✓
+4. Pastikan API-SSL aktif (port default 8729) ✓
+
+### Langkah 2: Buat User dengan Izin API
+1. Buka System → Users
+2. Tambahkan user baru:
+   - Nama: `h4n5vs_admin` (atau nama keren lainnya)
+   - Password: Jangan "password123" ya. Serius.
+   - Grup: "full" atau grup khusus dengan izin API
+
+### Langkah 3: Konfigurasi Firewall
+1. Buka IP → Firewall
+2. Pastikan akses ke port API (8728/8729) diizinkan dari server H4N5VS
+3. Jangan buka port API ke internet. Itu seperti meninggalkan pintu rumah terbuka saat liburan.
+
+**TIP:** _Jika router dan server H4N5VS berada di jaringan yang sama, konfigurasi menjadi lebih sederhana. Seperti mencari jodoh di lingkungan sendiri, lebih mudah "prosesnya"._
+
+---
+
+## MENJALANKAN APLIKASI: "AKHIRNYA BERTEMU SETELAH PERJUANGAN PANJANG" 💻
+
+Setelah melewati berbagai "rintangan" di atas, saatnya menikmati hasilnya:
+
+1. Buka browser Anda
+2. Masuk ke `http://localhost/h4n5vs/` (atau sesuai alamat server Anda)
+3. Login dengan kredensial default:
+   - Username: `admin`
+   - Password: `h4n5vs_admin`
+   - **SEGERA UBAH PASSWORD INI!!!**
+4. Tambahkan router Mikrotik Anda:
+   - Masuk ke "Manage Routers"
+   - Klik "Add Router"
+   - Isi detail router (nama, IP/hostname, username, password)
+
+**TIP:** _Jika aplikasi tidak terbuka, coba cek log server. Biasanya masalahnya seperti restoran tutup - karena ada yang salah di dapur._
+
+---
+
+## MODE DEMO: "SIMULASI SEBELUM PERNIKAHAN" 🎮
+
+Tidak punya router Mikrotik? Atau mau coba-coba dulu? Tenang, ada mode demo:
+
+1. Buka `http://localhost/h4n5vs/demo-login.php`
+2. Login dengan kredensial apa saja (tidak perlu asli)
+3. Jelajahi aplikasi dengan data simulasi
+
+**TIP:** _Mode demo seperti simulator terbang. Anda bisa merasakan pengalaman menerbangkan pesawat tanpa risiko jatuh sungguhan._
+
+---
+
+## TROUBLESHOOTING: "KETIKA HUBUNGAN MENJADI RUMIT" 🔍
+
+### Masalah Koneksi ke Router
 ```
-
-## Yang Harus Lo Siapin Dulu
-
-- Bitnami LAMP stack (Kayak beli nasi padang, udah komplit sepaket)
-- Akses ke router Mikrotik (Ya iyalah, masa mau ngamanin router tetangga)
-- API key OpenAI (Ini kayak SIM buat nyetir kecerdasan buatan)
-- Dikit-dikit ngerti perintah Linux (Minimal tau bedanya `ls` sama `rm` ya, jangan sampe data lo kehapus gara-gara salah perintah)
-
-## Spek yang Dibutuhin
-
-- PHP 7.4 ke atas (Kayak HP, minimal Android 10 lah ya)
-- MySQL/MariaDB 10.3 ke atas (Database buat nyimpen data, jangan pake notes di HP ya)
-- Apache 2.4 ke atas (Ini web server, bukan indian yang pake bulu-bulu di kepala)
-- RAM 2GB minimal (4GB lebih mantep, kayak kuah bakso, lebih banyak lebih enak)
-- Disk space 10GB (Biar gak sesak napas kayak naik motor ber-6 di jalan raya)
-
-## Cara Pasangnya
-
-### 1. Pasang Bitnami LAMP Stack Dulu
-
-Ini kayak pasang pondasi rumah. Kalo pondasinya goyang, ya ntar rumahnya ikutan goyang dangdut.
-
-1. Download dulu Bitnami LAMP dari [websitenya Bitnami](https://bitnami.com/stack/lamp)
-2. Jadiin file installernya bisa dieksekusi:
-   ```
-   chmod +x bitnami-lampstack-[versi]-linux-x64-installer.run
-   ```
-   
-   Ini ibarat ngasih "izin" ke file buat dijalanin. Kayak security klub malam yang ngasih stempel tangan.
-
-3. Jalanin installernya:
-   ```
-   ./bitnami-lampstack-[versi]-linux-x64-installer.run
-   ```
-   
-   Ini kayak nendang ban buat ngecek anginnya, tapi kali ini beneran jalan.
-
-4. Ikutin petunjuknya sampe beres. Gampang banget, tinggal klik "Next, Next, Next" kayak install game bajakan.
-
-### 2. Setting Aplikasinya
-
-1. Masuk ke folder root Apache:
-   ```
-   cd /opt/bitnami/apache2/htdocs/
-   ```
-   
-   Ini tuh kayak masuk ke kamar kosan lo, tempat utama buat naruh barang-barang.
-
-2. Buang file index.html bawaannya:
-   ```
-   rm index.html
-   ```
-   
-   Ibarat lo buang poster idol K-Pop dari kamar kosan yang ditinggalin penghuni sebelumnya.
-
-3. Clone atau copy file aplikasinya ke root:
-   ```
-   git clone https://your-repository-url.git .
-   ```
-   
-   Atau kalo punya file ZIP:
-   ```
-   unzip h4n5vs.zip -d .
-   ```
-   
-   Ini kayak lo mindahin semua barang-barang lo ke kamar kosan baru.
-
-4. Bikin direktori yang dibutuhin dengan izin yang bener:
-   ```
-   mkdir -p data logs
-   chmod 755 data logs
-   chown -R daemon:daemon data logs
-   ```
-   
-   Ini kayak bikin lemari baru di kamar kosan, tapi pastiin kuncinya ada, gak bisa sembarangan dibuka sama orang.
-
-5. Install ekstensi PHP yang dibutuhin:
-   ```
-   sudo /opt/bitnami/php/bin/pecl install openssl mysqli
-   ```
-   
-   Anggep aja ini kayak pasang fitur-fitur tambahan di HP baru lo.
-
-6. Install Composer (kalo belum ada):
-   ```
-   curl -sS https://getcomposer.org/installer | php
-   mv composer.phar /usr/local/bin/composer
-   ```
-   
-   Composer itu kayak asisten pribadi yang bantuin lo belanja kebutuhan coding.
-
-7. Install dependensi PHP:
-   ```
-   composer install
-   ```
-   
-   Ini ibarat belanja bulanan di supermarket. Composer yang bayarin, lo tinggal masukin ke kulkas.
-
-### 3. Install OpenAI PHP SDK
-
-1. Pake Composer buat install OpenAI PHP SDK:
-   ```
-   composer require openai/openai-php
-   ```
-   
-   Ini ibarat lo nyuruh asisten lo buat beli otak AI. "Mas, tolong beliin otak AI yang bisa nebak-nebak serangan hacker dong!"
-
-### 4. Setting Variabel Lingkungan
-
-1. Bikin file .env di root aplikasi:
-   ```
-   touch .env
-   ```
-   
-   Ini kayak bikin catetan rahasia yang bakal disimpen di bawah bantal.
-
-2. Tambahin OpenAI API key ke file .env:
-   ```
-   echo "OPENAI_API_KEY=API_KEY_LO_TARUH_SINI" >> .env
-   ```
-   
-   Anggep ini kayak nulis password ATM lo. JANGAN SAMPE KETAUAN ORANG!
-
-3. Update izin filenya:
-   ```
-   chmod 600 .env
-   chown daemon:daemon .env
-   ```
-   
-   Ini ibarat naruh catetan password ATM lo di safe deposit box, bukan di mading kampus.
-
-4. Biar PHP bisa akses variabel lingkungan, edit file konfigurasi Apache:
-   ```
-   nano /opt/bitnami/apache2/conf/httpd.conf
-   ```
-   
-   Ini kayak ngasih tau satpam kalo si anu boleh masuk, soalnya dia temen lo.
-
-5. Tambahin konfigurasi ini buat ngasih akses ke variabel lingkungan:
-   ```
-   <Directory "/opt/bitnami/apache2/htdocs">
-       PassEnv OPENAI_API_KEY
-   </Directory>
-   ```
-   
-   Anggep ini kayak ngasih list tamu undangan ke satpam apartemen.
-
-6. Restart Apache:
-   ```
-   sudo /opt/bitnami/ctlscript.sh restart apache
-   ```
-   
-   Ini kayak nyuruh satpam pulang dulu terus balik lagi bawa list tamu yang udah diupdate.
-
-### 5. Konfigurasi Apache (kalo perlu)
-
-1. Bikin konfigurasi virtual host baru:
-   ```
-   nano /opt/bitnami/apache2/conf/vhosts/h4n5vs-vhost.conf
-   ```
-   
-   Ini ibarat bikin surat izin pesta di kosan lo.
-
-2. Tambahin konfigurasi berikut:
-   ```
-   <VirtualHost *:80>
-       ServerName domainlo.com
-       DocumentRoot "/opt/bitnami/apache2/htdocs"
-       
-       <Directory "/opt/bitnami/apache2/htdocs">
-           Options Indexes FollowSymLinks
-           AllowOverride All
-           Require all granted
-       </Directory>
-       
-       ErrorLog "logs/h4n5vs-error.log"
-       CustomLog "logs/h4n5vs-access.log" combined
-   </VirtualHost>
-   ```
-   
-   Mirip kayak lo nulis alamat lengkap di surat undangan, biar gak ada yang nyasar.
-
-3. Aktifin virtual host dan restart Apache:
-   ```
-   sudo /opt/bitnami/apache2/bin/apachectl -k restart
-   ```
-   
-   Kayak lo ngasih surat izin ke RT dan ngerefresh keamanan kompleks.
-
-### 6. Cek Hasil Instalasi
-
-1. Buka browser dan kunjungi alamat IP server atau domain lo
-
-2. Harusnya lo udah liat halaman login H4N5VS
-
-3. Login pake kredensial default:
-   - Username: admin
-   - Password: admin123
-   
-   Ini ibarat kunci master pertama kali masuk kosan baru. GANTI SEGERA!
-
-4. Setelah login, lo perlu konfigurasi pengaturan koneksi router Mikrotik
-
-   Anggep ini kayak lo ngehubungin CCTV ke HP lo, biar bisa mantau dari mana aja.
-
-### 7. Tips Keamanan
-
-1. Ganti kredensial login default secepatnya setelah login pertama
-   
-   Ini kayak ganti gembok kosan baru, masa pake gembok yang kuncinya dipegang semua orang?
-
-2. Atur izin file yang bener:
-   ```
-   find /opt/bitnami/apache2/htdocs -type f -exec chmod 644 {} \;
-   find /opt/bitnami/apache2/htdocs -type d -exec chmod 755 {} \;
-   ```
-   
-   Ibarat mastiin semua jendela dan pintu udah kekunci dengan bener.
-
-3. Amanin file .env lo:
-   ```
-   chmod 600 /opt/bitnami/apache2/htdocs/.env
-   ```
-   
-   Ini kayak nyimpen nomer pin ATM di tempat yang super rahasia.
-
-4. Pertimbangkan pake HTTPS dengan ngonfigurasi sertifikat SSL
-   
-   Anggep ini kayak upgrade dari satpam biasa jadi satpam bersenjata lengkap.
-
-5. Rutin update aplikasi dan dependensinya
-   
-   Ini kayak rutin ganti password, biar makin aman terus.
-
-## Troubleshooting (Kalo Ada Masalah)
-
-### Gak Bisa Konek ke Router
-
-1. Cek IP, username, dan password router lo (Ini kayak mastiin alamat tujuan sebelum nyasar)
-2. Pastiin API service aktif di router Mikrotik lo (Satpam gak bisa kerja kalo belum dibangunin)
-3. Cek port yang dibutuhin (8728 untuk API, 8729 untuk secure API) udah kebuka (Ini kayak mastiin pintu rumah gak digembok dari dalem)
-
-### PHP Extensions Hilang
-
-Kalo nemu error PHP extension gak ada, install pake:
+"Seperti hubungan yang gagal - tidak bisa connect"
 ```
-sudo /opt/bitnami/php/bin/pecl install nama_extension
+1. Cek apakah IP router benar
+2. Pastikan username dan password benar
+3. Cek apakah port API aktif di router
+4. Periksa firewall (mungkin dia memblokir koneksi seperti mantan memblokir nomor Anda)
+
+### Masalah Database
 ```
-
-Terus tambahin extension ke file php.ini:
+"Seperti kehilangan memori - semua data hilang"
 ```
-echo "extension=nama_extension.so" >> /opt/bitnami/php/etc/php.ini
+1. Pastikan layanan MySQL berjalan
+2. Cek file konfigurasi `includes/db_config.php`
+3. Pastikan pengguna MySQL memiliki izin yang cukup
+
+### Aplikasi Lambat
 ```
-
-Ini kayak HP lo gak bisa main game berat, terus lo download RAM tambahan (walaupun sebenernya gak bisa gitu sih).
-
-### Masalah Izin File
-
-Kalo nemu error izin, pastiin user Apache punya akses yang bener:
+"Seperti mantan yang suka lama bales chat"
 ```
-chown -R daemon:daemon /opt/bitnami/apache2/htdocs
-```
+1. Pastikan server memenuhi kebutuhan minimum
+2. Kurangi jumlah data yang disimpan jika terlalu banyak
+3. Cek apakah ada proses lain yang makan sumber daya server
 
-Kayak ngasih duplikat kunci kosan ke pacar biar bisa masuk kapan aja (tapi hati-hati bro).
+---
 
-### Masalah OpenAI API
+## TIPS KEAMANAN: "SEPERTI NASIHAT DARI TETANGGA YANG PERNAH KEMALINGAN" 🔐
 
-1. Cek API key lo udah bener di file .env (Ini kayak mastiin PIN ATM yang lo inget)
-2. Pastiin Apache bisa akses variabel lingkungan (Satpam bisa baca list tamu)
-3. Cek log API buat pesan error spesifik (Buka rekaman CCTV pas maling masuk)
+- Ganti password default SEGERA!
+- Atur akses ke server H4N5VS hanya dari jaringan lokal
+- Backup database secara berkala
+- Perbarui aplikasi ke versi terbaru
 
-## Bantuan
+**TIP ULTRA PENTING:** _Menyimpan password di sticky note dan ditempel di monitor itu seperti menyimpan kunci rumah di bawah keset. Semua orang tahu tempatnya!_
 
-Kalo nemu masalah yang gak ada di panduan troubleshooting ini, silakan kontak support di support@h4n5vs.com atau buka issue di repositori GitHub project ini. Kayak nanya ke pawang hujan pas lagi banjir.
+---
 
-## Update Aplikasi
+## KESIMPULAN: "PERJALANAN SERIBU KILOMETER DIMULAI DENGAN SATU KLIK" 🏁
 
-Buat update aplikasi ke versi terbaru:
+Selamat! Anda telah berhasil menginstal H4N5VS Mikrotik System Security. Sistem Anda sekarang sudah diawasi 24/7, seperti ibu-ibu yang mengawasi anak muda pacaran.
 
-1. Backup dulu instalasi lo yang sekarang:
-   ```
-   cp -r /opt/bitnami/apache2/htdocs /opt/bitnami/apache2/htdocs_backup
-   ```
-   
-   Kayak fotokopi KTP sebelum nyerahin yang asli ke resepsionis hotel.
+**Jika Anda masih kebingungan**, ingat kata pepatah: "Ketika bingung, reboot dulu." Kalau masih bingung juga, coba baca lagi dari awal, mungkin ada langkah yang terlewat.
 
-2. Masuk ke direktori aplikasi:
-   ```
-   cd /opt/bitnami/apache2/htdocs
-   ```
-   
-   Kayak masuk ke rumah sendiri, tapi hati-hati ada renovasi.
+**Untuk bantuan lebih lanjut**, hubungi tim dukungan kami yang ramah dan jarang tidur di support@h4n5vs-security.com atau kunjungi forum kami yang penuh dengan orang-orang yang hidupnya didedikasikan untuk keamanan router.
 
-3. Ambil perubahan terbaru (kalo pake Git):
-   ```
-   git pull origin main
-   ```
-   
-   Ibarat lo update status hubungan di sosmed.
+---
 
-4. Update dependensi:
-   ```
-   composer update
-   ```
-   
-   Kayak grocery shopping bulanan.
-
-5. Restore file .env kalo perlu:
-   ```
-   cp /opt/bitnami/apache2/htdocs_backup/.env /opt/bitnami/apache2/htdocs/
-   ```
-   
-   Ibarat balikin foto kenangan ke dompet baru setelah ganti dompet.
-
-6. Benerin izin:
-   ```
-   chown -R daemon:daemon /opt/bitnami/apache2/htdocs
-   ```
-   
-   Kayak mastiin semua pintu kebuka pake kunci yang sama.
-
-7. Restart Apache:
-   ```
-   sudo /opt/bitnami/ctlscript.sh restart apache
-   ```
-   
-   Ibarat reboot otak lo setelah begadang coding.
-
-## Fungsi-Fungsi Utama Aplikasi (Biar Lo Paham)
-
-### RouterOS API
-Ini kayak TRANSLATOR antara bahasa Mikrotik sama bahasa aplikasi kita. Kalo dibayangin, RouterOS API itu kayak translator di PBB. Mikrotik ngomong pake bahasa alien, aplikasi kita ngomong pake bahasa PHP, terus RouterOS API ini yang menterjemahkan. "Eh bro, router lo bilang ada 999+ upaya login gagal nih, kayaknya ada yang mau bobol password!"
-
-### AI Pattern Recognition
-Kalo ini kayak detektif swasta yang super jenius. Tau gak detektif di film-film yang bisa nebak pelaku pembunuhan cuma dari lipatan baju korban? Nah AI kita gini! Dia cuma liat pola traffic data, langsung bisa bilang "Ini mah DDoS attack nih, gaya-gayanya anak 4chan lagi gabut malem Minggu."
-
-### Traffic Monitoring
-Ibarat lo jadi polisi yang mangkal di lampu merah. Semua kendaraan (data) yang lewat, lo catat: "Wah si B 1234 XX ngebut nih, B 5678 YY lampunya mati, B 9012 ZZ platnya kotor gak kebaca." Gitu, tapi yang dicatat bukan plat nomor tapi IP address dan port.
-
-### Threat Mitigation
-Ini JAGOAN kita! Kayak lo panggil Satria Baja Hitam pas diserang monster. Begitu aplikasi deteksi ada serangan, mitigation engine langsung bereaksi: "SIAP BOS! Firewall rule udah dipasang, IP penyerang diblokir, lubang keamanan ditambal, beres dah!"
-
-### Dashboard
-Dashboard itu kayak kokpit pesawat tapi buat keamanan jaringan. Pilot bisa tau mesin nomer 2 overheat dari lampu merah yang nyala, nah admin jaringan juga bisa tau "wah traffik tiba-tiba naik 500%, nih pasti ada yang DDoS!" dari dashboard H4N5VS yang kece abis.
-
-## License
-
-H4N5VS Mikrotik System Security dilisensikan di bawah Lisensi MIT. Lihat file LICENSE untuk detail. Intinya, jangan jual aplikasi ini tapi bilangnya buatan lo sendiri ya! Itu namanya nyolong, gak berkah!
+_"Kami membuat keamanan jaringan menjadi menyenangkan, atau setidaknya tidak terlalu menyakitkan."_ - Tim H4N5VS

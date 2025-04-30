@@ -1,145 +1,107 @@
+# H4N5VS Mikrotik System Security
 
-# 🤖 H4N5VS - Mikrotik System Security  
-**Aplikasi monitoring dan keamanan router Mikrotik**  
-*Biar nggak ada yang numpang nonton bokep lewat WiFi lu, Pak!*
+Aplikasi monitoring dan keamanan untuk router Mikrotik berbasis PHP.
 
----
+## Fitur Utama
 
-## 🎤 Opening dulu ya, Pak...
+* Monitoring sistem router secara real-time
+* Deteksi otomatis serangan DDoS, botnet, dan aktivitas mencurigakan
+* Mitigasi otomatis terhadap ancaman keamanan
+* Pemeriksaan alamat IP mencurigakan
+* Dashboard interaktif untuk analisis lalu lintas jaringan
+* Log sistem komprehensif
 
-“Zaman sekarang, yang nyerang bukan cuma mantan... tapi juga botnet, DDoS, sama bocah warnet yang iseng pake LOIC! 😤”  
-Makanya, kenalin: **H4N5VS**, sistem keamanan router Mikrotik yang bakal bikin WiFi Bapak kayak rumah... penuh pengawasan! 👮‍♂️📡
-
----
-
-## ⚙️ Fitur Utama
-
-- 👀 **Monitoring real-time:** Pantau router kayak mantau grup WA keluarga.
-- 🛡️ **Deteksi serangan:** DDoS, botnet, & IP mencurigakan. Ibarat satpam siber.
-- 💥 **Mitigasi otomatis:** Kalo ada yang aneh, langsung tendang!
-- 🔍 **IP Checker:** Tau siapa yang ngintip, meskipun pakai VPN KW.
-- 📊 **Dashboard Keren:** Warna neon, font terminal, vibes Matrix.
-- 📁 **Log Lengkap:** Semua kejadian terekam. Replay siap.
-
----
-
-## 🧪 Cara Pakai (Lokal Server: XAMPP/Bitnami)
+## Cara Penggunaan di Server Lokal (Bitnami)
 
 ### Persyaratan
-- PHP 7.4+
-- Apache/Nginx (bukan kipas angin)
-- Koneksi internet
+* PHP 7.4+ atau PHP 8.0+
+* Web server Apache atau Nginx
+* Koneksi internet (opsional, untuk pemeriksaan IP)
 
-### Instalasi
+### Instalasi pada XAMPP/Bitnami
 
-```bash
-git clone https://github.com/username/h4n5vs-mikrotik-security.git
-```
+1. **Unduh atau Clone Repository**
+   ```
+   git clone https://github.com/username/h4n5vs-mikrotik-security.git
+   ```
+   atau ekstrak arsip ZIP ke direktori web server Anda.
 
-Atau ekstrak manual, kayak zaman 4Shared.
+2. **Konfigurasikan Web Server**
+   - Salin semua file aplikasi ke direktori htdocs (XAMPP) atau htdocs di Bitnami
+   - Pastikan direktori web root mengarah ke folder aplikasi
 
-### Konfigurasi Web Server
+3. **Buat Folder Logs**
+   ```
+   mkdir logs
+   ```
+   Dan pastikan folder tersebut memiliki izin yang tepat (dapat ditulis oleh web server):
+   ```
+   chmod 755 logs
+   ```
 
-1. Copy ke `htdocs`
-2. Arahkan server ke folder
-3. Buat folder log:
+4. **Akses Aplikasi**
+   Buka browser web dan arahkan ke:
+   ```
+   http://localhost/h4n5vs/
+   ```
+   atau URL yang sesuai dengan konfigurasi server Anda.
 
-```bash
-mkdir logs
-chmod 755 logs
-```
+5. **Login ke Aplikasi**
+   - Username: admin
+   - Password: admin123
 
----
+6. **Konfigurasi Router Mikrotik**
+   Masukkan detail router Mikrotik Anda:
+   - IP Address
+   - Username
+   - Password
 
-## 🚀 Jalankan Aplikasi
+### Tampilan Alternatif
 
-Buka browser:
+Kami menyediakan dua tampilan dashboard yang dapat digunakan:
+1. Dashboard standar: `/dashboard.php`
+2. Dashboard dengan tema hitam: `/dashboard-new.php`
 
-```
-http://localhost/h4n5vs/
-```
+Untuk menggunakan dashboard dengan tema hitam, ubah file `index.php` untuk mengarahkan ke `dashboard-new.php` alih-alih `dashboard.php`.
 
-**Login:**
-- Username: `admin`
-- Password: `h4n5v5`  
-(Jangan lupa ganti, ntar diserobot anak warnet 😆 di file auth.php)
-
----
-
-## 🔌 Hubungkan Router Mikrotik
-
-Isi:
-- IP Router
-- Username Router
-- Password Router
-
-Terus klik *Connect*  
-Langsung bisa monitoring kayak FBI.
-
----
-
-## 🌑 Tema Hacker Mode
-
-> Buat mata adem dan kelihatan lebih "pro"
-
-- `dashboard.php` = versi default
-- `dashboard-new.php` = mode terminal gelap
-
-Ubah arahkan di `index.php` kalau mau default dark mode.
-
----
-
-## 📂 Struktur Folder
+## Struktur Direktori
 
 ```
 /
-├── api/
-├── assets/
-├── includes/
-├── logs/
-├── config.php
-├── dashboard.php
-├── dashboard-new.php
-├── index.php
-├── login.php
-└── logout.php
+├── api/                  # API endpoints untuk data real-time
+├── assets/               # Asset statis (CSS, JavaScript, gambar)
+├── includes/             # File-file PHP yang digunakan bersama
+├── logs/                 # Direktori untuk menyimpan log aplikasi
+├── config.php            # Konfigurasi router
+├── dashboard.php         # Dashboard utama
+├── dashboard-new.php     # Dashboard dengan tema alternatif
+├── index.php             # Halaman indeks
+├── login.php             # Halaman login
+└── logout.php            # Proses logout
 ```
 
----
+## Mode Demo
 
-## 🧪 Mode Demo
+Jika Anda tidak memiliki router Mikrotik, aplikasi akan berjalan dalam "mode demo" yang mensimulasikan koneksi ke router menggunakan data contoh. Ini memungkinkan Anda untuk mengeksplorasi antarmuka dan fungsionalitas tanpa perangkat keras router yang sebenarnya.
 
-Nggak punya Mikrotik? Bisa test mode dummy.  
-Pakai data simulasi. Serasa punya jaringan NASA.
+## Kustomisasi
 
----
+Anda dapat menyesuaikan aplikasi dengan mengedit file berikut:
+- `assets/css/style.css` - untuk tampilan standar
+- `assets/css/dark-theme.css` - untuk tampilan tema gelap
 
-## 🎨 Kustomisasi
+## Keamanan
 
-- `assets/css/style.css` → mode biasa
-- `assets/css/dark-theme.css` → mode terminal gelap
+Untuk lingkungan produksi, pastikan untuk:
+1. Mengubah kredensial default (username/password)
+2. Mengaktifkan HTTPS untuk koneksi yang aman
+3. Membatasi akses ke aplikasi hanya untuk pengguna yang berwenang
+4. Memperbarui RouterOS API secara teratur
 
-Mau warna neon pink? Silakan, Pak. Asal jangan font Comic Sans aja ya.
+## Dukungan dan Kontribusi
 
----
+Untuk pertanyaan atau saran, silakan buka issue di repositori ini. Kontribusi sangat diterima melalui pull requests.
 
-## 🔐 Tips Keamanan
+## Lisensi
 
-- Ganti password default
-- Aktifkan HTTPS
-- Batasi IP akses
-- Update RouterOS & API secara rutin
-
----
-
-## 🤝 Kontribusi
-
-Mau bantu? Bikin fitur? Kirim pull request.  
-Mari bangun firewall digital Nusantara bersama-sama.
-
----
-
-## 📜 Lisensi
-
-MIT License  
-Bebas pakai, asal jangan dijual di Tokped 🤣
+[MIT License](LICENSE)
