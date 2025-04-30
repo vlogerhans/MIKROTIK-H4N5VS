@@ -1,159 +1,145 @@
-**# MIKROTIK-H4N5VS**# 🛡️ H4N5VS Mikrotik System Security
 
-**H4N5VS** adalah sistem keamanan jaringan khusus untuk Mikrotik, ditulis dalam PHP, dengan tampilan terminal-hacker kekinian. Mirip antivirus, tapi bukan buat PC — ini buat router! Bisa deteksi DDoS, serangan botnet, brute-force, lalu langsung ambil tindakan. Auto-tendang penjahat jaringan. Cocok buat lo yang cinta kecepatan, benci kejahatan!
-
----
-
-## 🚀 Analogi Instalasi: Biar Lo Gak Bingung
-
-Bayangin lo lagi masak mi instan...  
-- Airnya = Bitnami LAMP Stack  
-- Mie-nya = File aplikasi H4N5VS  
-- Bumbunya = API key OpenAI + Router Mikrotik  
-- Kompornya = Apache + PHP  
-- Sendoknya = Composer
-
-Kalau salah masak? Ya rasanya ngaco. Jadi ikutin petunjuknya, chef!
+# 🤖 H4N5VS - Mikrotik System Security  
+**Aplikasi monitoring dan keamanan router Mikrotik**  
+*Biar nggak ada yang numpang nonton bokep lewat WiFi lu, Pak!*
 
 ---
 
-## 📋 Prasyarat (Bahan Baku)
+## 🎤 Opening dulu ya, Pak...
 
-- ✅ Bitnami LAMP Stack udah terpasang
-- ✅ Akses ke router Mikrotik (RouterOS)
-- ✅ OpenAI API Key buat fitur deteksi pintar
-- ✅ Skill dasar Linux biar gak panik lihat terminal
+“Zaman sekarang, yang nyerang bukan cuma mantan... tapi juga botnet, DDoS, sama bocah warnet yang iseng pake LOIC! 😤”  
+Makanya, kenalin: **H4N5VS**, sistem keamanan router Mikrotik yang bakal bikin WiFi Bapak kayak rumah... penuh pengawasan! 👮‍♂️📡
 
 ---
 
-## 💻 Spesifikasi Minimum
+## ⚙️ Fitur Utama
 
+- 👀 **Monitoring real-time:** Pantau router kayak mantau grup WA keluarga.
+- 🛡️ **Deteksi serangan:** DDoS, botnet, & IP mencurigakan. Ibarat satpam siber.
+- 💥 **Mitigasi otomatis:** Kalo ada yang aneh, langsung tendang!
+- 🔍 **IP Checker:** Tau siapa yang ngintip, meskipun pakai VPN KW.
+- 📊 **Dashboard Keren:** Warna neon, font terminal, vibes Matrix.
+- 📁 **Log Lengkap:** Semua kejadian terekam. Replay siap.
+
+---
+
+## 🧪 Cara Pakai (Lokal Server: XAMPP/Bitnami)
+
+### Persyaratan
 - PHP 7.4+
-- MySQL/MariaDB 10.3+
-- Apache 2.4+
-- RAM 2GB (4GB lebih mantep)
-- 10GB ruang disk (biar lega)
+- Apache/Nginx (bukan kipas angin)
+- Koneksi internet
+
+### Instalasi
+
+```bash
+git clone https://github.com/username/h4n5vs-mikrotik-security.git
+```
+
+Atau ekstrak manual, kayak zaman 4Shared.
+
+### Konfigurasi Web Server
+
+1. Copy ke `htdocs`
+2. Arahkan server ke folder
+3. Buat folder log:
+
+```bash
+mkdir logs
+chmod 755 logs
+```
 
 ---
 
-## 🧙‍♂️ Langkah Instalasi (Masak Mie-nya)
+## 🚀 Jalankan Aplikasi
 
-### 1. Install Bitnami LAMP Stack
-```bash
-chmod +x bitnami-lampstack-[versi]-linux-x64-installer.run
-./bitnami-lampstack-[versi]-linux-x64-installer.run
+Buka browser:
 
-### 2. Masukin Aplikasi ke Panci Apache
-```bash
-cd /opt/bitnami/apache2/htdocs/
-rm index.html
-git clone https://your-repo-url.git .
-# atau kalau file ZIP
-unzip h4n5vs.zip -d .
+```
+http://localhost/h4n5vs/
+```
 
-### 3. Bikin Folder Penting
-mkdir -p data logs
-chmod 755 data logs
-chown -R daemon:daemon data logs
+**Login:**
+- Username: `admin`
+- Password: `admin123`  
+(Jangan lupa ganti, ntar diserobot anak warnet 😆)
 
-### 4. Pasang Bumbu PHP (Extension & Composer)
-sudo /opt/bitnami/php/bin/pecl install openssl mysqli
-curl -sS https://getcomposer.org/installer | php
-mv composer.phar /usr/local/bin/composer
-composer install
+---
 
-### 5. Tambahkan SDK OpenAI
-composer require openai/openai-php
-
-### 6. Buat File Rahasia (.env)
-touch .env
-echo "OPENAI_API_KEY=isi_api_key_disini" >> .env
-chmod 600 .env
-chown daemon:daemon .env
-
-### Edit Apache biar bisa "cium" environment variable:
-bash:
-nano /opt/bitnami/apache2/conf/httpd.conf
-# Tambahkan:
-<Directory "/opt/bitnami/apache2/htdocs">
-    PassEnv OPENAI_API_KEY
-</Directory>
-sudo /opt/bitnami/ctlscript.sh restart apache
-
-### 🌐 Bikin Virtual Host (Opsional tapi Keren)
-nano /opt/bitnami/apache2/conf/vhosts/h4n5vs-vhost.conf
+## 🔌 Hubungkan Router Mikrotik
 
 Isi:
-<VirtualHost *:80>
-    ServerName yourdomain.com
-    DocumentRoot "/opt/bitnami/apache2/htdocs"
-    <Directory "/opt/bitnami/apache2/htdocs">
-        Options Indexes FollowSymLinks
-        AllowOverride All
-        Require all granted
-    </Directory>
-    ErrorLog "logs/h4n5vs-error.log"
-    CustomLog "logs/h4n5vs-access.log" combined
-</VirtualHost>
+- IP Router
+- Username Router
+- Password Router
 
-## Restart lagi: 
-bash:
-sudo /opt/bitnami/apache2/bin/apachectl -k restart
+Terus klik *Connect*  
+Langsung bisa monitoring kayak FBI.
 
-## ✅ Verifikasi (Cobain Masuk)
-Buka browser: http://IP-Server
-Harusnya muncul halaman login H4N5VS
+---
 
-Login Default:
+## 🌑 Tema Hacker Mode
 
-Username: admin
+> Buat mata adem dan kelihatan lebih "pro"
 
-Password: admin123
+- `dashboard.php` = versi default
+- `dashboard-new.php` = mode terminal gelap
 
-Langsung ganti ya, jangan kayak default password Indihome.
+Ubah arahkan di `index.php` kalau mau default dark mode.
 
-## 🔒 Keamanan (Pakai Helm & Rompi Anti Peluru)
-bash :
-find /opt/bitnami/apache2/htdocs -type f -exec chmod 644 {} \;
-find /opt/bitnami/apache2/htdocs -type d -exec chmod 755 {} \;
-chmod 600 /opt/bitnami/apache2/htdocs/.env
+---
 
-Note : Gunakan SSL (biar HTTPS, bukan HTPSS 😅)
+## 📂 Struktur Folder
 
+```
+/
+├── api/
+├── assets/
+├── includes/
+├── logs/
+├── config.php
+├── dashboard.php
+├── dashboard-new.php
+├── index.php
+├── login.php
+└── logout.php
+```
 
-## 🧯 Troubleshooting (Kalau Mie Lo Gak Matang)
-Router Gak Terdeteksi?
+---
 
-Cek IP, username, password
+## 🧪 Mode Demo
 
-Pastikan API aktif di Mikrotik (/ip service enable api)
+Nggak punya Mikrotik? Bisa test mode dummy.  
+Pakai data simulasi. Serasa punya jaringan NASA.
 
-Port 8728 atau 8729 jangan diblokir
+---
 
-# PHP Extension Hilang?
+## 🎨 Kustomisasi
 
-bash:
-sudo /opt/bitnami/php/bin/pecl install extension_name
-echo "extension=extension_name.so" >> /opt/bitnami/php/etc/php.ini
+- `assets/css/style.css` → mode biasa
+- `assets/css/dark-theme.css` → mode terminal gelap
 
-Permission Error?
-bash:
-chown -R daemon:daemon /opt/bitnami/apache2/htdocs
+Mau warna neon pink? Silakan, Pak. Asal jangan font Comic Sans aja ya.
 
-### 🔄 Update Aplikasi
-bash:
+---
 
-cp -r /opt/bitnami/apache2/htdocs /opt/bitnami/apache2/htdocs_backup
-cd /opt/bitnami/apache2/htdocs
-git pull origin main
-composer update
-cp /opt/bitnami/apache2/htdocs_backup/.env ./
-chown -R daemon:daemon .
-sudo /opt/bitnami/ctlscript.sh restart apache
+## 🔐 Tips Keamanan
 
-### 📄 Lisensi
-Proyek ini dilisensikan dengan MIT License. Bebas pakai, asal jangan dipakai buat nyusupin iklan pinjol.
+- Ganti password default
+- Aktifkan HTTPS
+- Batasi IP akses
+- Update RouterOS & API secara rutin
 
-### ❤️ Terima Kasih
-Kalau lo sampai di bawah ini, lo adalah pejuang jaringan sejati. Jangan lupa ngopi, dan selamat mengamankan router!
+---
 
+## 🤝 Kontribusi
+
+Mau bantu? Bikin fitur? Kirim pull request.  
+Mari bangun firewall digital Nusantara bersama-sama.
+
+---
+
+## 📜 Lisensi
+
+MIT License  
+Bebas pakai, asal jangan dijual di Tokped 🤣
