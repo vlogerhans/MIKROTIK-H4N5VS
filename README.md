@@ -61,8 +61,8 @@ http://localhost/h4n5vs/
 
 **Login:**
 - Username: `admin`
-- Password: `admin123`  
-(Jangan lupa ganti, ntar diserobot anak warnet 😆)
+- Password: `h4n5v5`  
+(Jangan lupa ganti, ntar diserobot anak warnet 😆 di file auth.php)
 
 ---
 
